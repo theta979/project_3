@@ -57,13 +57,13 @@ d3.json(link).then(geojsonData => {
                 let tractID = feature.properties["GEOID10"];
                 let data = censusLookup[tractID];
                 // Add content to pop-ups
-                let popupContent = `<b>Census Tract:</b> ${tractID}<br>`;// Should we put Zip Code instead?
+                let popupContent = `<b>Census Tract:</b> ${tractID}<br>`;
                 if (data) {
                     let lowAccessStatus = data["LA - 1 mile radius", "LA - 0.5 mile radius"] === "1" ? "Low Access" : "Not Low Access";
 
                     popupContent += `<b>Population:</b> ${data["Population"]}<br>`;// What else should we include in pop-ups
                     popupContent += `<b>Status:</b> ${lowAccessStatus}<br>`;
-                    popupContent += `<b>Median Income: </b> $${data["Median Family Income"]}<br>`;
+                    // popupContent += `<b>Median Income: </b> $${data["Median Family Income"]}<br>`; Not needed for this Visualization
                 } else {
                     popupContent += "No data available";
                 }
@@ -86,8 +86,44 @@ function getColor(lowAccess5, lowAccess1) {
     } else {
         return "gray";
     }
-    // return value[0] == 1 ? "red" :
-    //        value[1] == 0 ? "green" :
-    //        value[1] == 1 ? "yellow" :
-    //                       "gray";
+
+
+}
+
+// Create a legend control object
+let legend = L.control({
+    position: "bottomright"
+});
+
+// Then add all the details for the legend
+legend.onAdd = function () {
+    let div = L.DomUtil.create("div", "info legend");
+
+    // Set legend styles
+    div.style.background = "white";
+    div.style.padding = "10px";
+    div.style.alignItems = "center";
+
+    // Add title
+    div.innerHTML = "<h4 style='text-align: center; margin-bottom: 5px;'>Legend</h4>";
+
+    // Define categories based on getColor scheme
+    let categories = [
+        {label: "Not Low Access", color: getColor(0, 0)}, // Green
+        {label: "Low Access (> .5 miles)", color: getColor(1, 0)}, // Yellow
+        {label: "low Access (> 1 mile)", color: getColor(1, 1)}, // Red
+        {label: "Undefined / Other", color: getColor(-1, -1)} // Gray (Default)
+    ];
+
+
+    // Loop through categories to create legend items
+    categories.forEach(item => {
+        div.innerHTML += `<div style="display: flex; align-items: center; gap: 5px; margin-bottom: 5px;">
+            <i style="background" ${item.color}; width: 15px; height: 15px; display: inline-block;"></1>
+            ${item.label}
+        </div>`;
+    });
+
+    return div;
+
 }
