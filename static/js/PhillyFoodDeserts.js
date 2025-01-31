@@ -6,7 +6,7 @@ let streetmap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
 // Create map of Philadelphia with layers
 let PhillyMap = L.map("map", {
     center: [39.95, -75.16],
-    zoom: 13
+    zoom: 12
 });
 
 // Add streetmap tile layer to the map
@@ -91,9 +91,9 @@ function getColor(lowAccess5, lowAccess1) {
 }
 
 // Create a legend control object
-let legend = L.control({
-    position: "bottomright"
-});
+// let legend = L.control({
+//     position: "bottomright"
+// });
 
 // Then add all the details for the legend
 legend.onAdd = function () {
@@ -126,4 +126,4 @@ legend.onAdd = function () {
 
     return div;
 
-}
+};
