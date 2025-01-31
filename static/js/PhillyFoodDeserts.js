@@ -125,5 +125,6 @@ legend.onAdd = function () {
     });
 
     return div;
-
 };
+// Finally, add the legend to the map.
+  legend.addTo(PhillyMap);
