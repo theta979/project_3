@@ -88,7 +88,7 @@ function getColor(lowAccess5, lowAccess1) {
     }
 
 
-}
+};
 
 // Create a legend control object
 // let legend = L.control({
